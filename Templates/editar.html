@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeuBolso - Adicionar Receita</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}">
+    <script src="https://kit.fontawesome.com/ac1aaaa398.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="div-logo">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="logo MeuBolso">
+            <p>Meu<span>Bolso</span></p>
+        </div>
+
+        <div class="menu-icon" onclick="abrirFecharMenu()">
+            <div id="linha1"></div>
+            <div id="linha2"></div>
+            <div id="linha3"></div>
+        </div>
+
+        <div class="div-items-menu">
+            <div class="div-user">
+                <i class="fa-solid fa-circle-user"></i>
+                <p>{{session.get('nome')}} {{session.get('sobrenome')}}</p>
+            </div>           
+            <nav>
+                <a href="{{ url_for('home') }}">
+                    <i class="fa-solid fa-wallet"></i>
+                    <p>Home</p>
+                </a>
+                <a href="{{ url_for('abrirReceita') }}">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    <p>Adicionar Receita</p>
+                </a>
+                <a href="{{ url_for('abrirDespesa') }}">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <p>Adicionar Despesa</p>
+                </a>
+                <a href="{{ url_for('historico') }}">
+                    <i class="fa-solid fa-file"></i>
+                    <p>Histórico</p>
+                </a>
+            </nav>
+            <a href="{{ url_for('logout') }}"> 
+                <div class="div-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <p>Sair</p>
+                </div>
+            </a>            
+        </div>
+    </header>
+    <main class="main-adicionar">
+        <div class="container">
+            <h2>Editar {{receitaOuDespesa}}</h2>
+            <form method="POST" action="{{ url_for('salvarAlteracoes', id=mensagem[0], tipo=receitaOuDespesa) }}" class="form-add">
+                <div class="div-input">
+                    <p>Fonte</p>
+                    <input type="text" placeholder="~" class="add-input" name="fonte" value="{{ mensagem[3] }}" required>
+                </div>
+                <div class="div-dupla">
+                    <div class="div-input div-valor">
+                        <p>Valor</p>
+                        <i>R$</i>
+                        <input type="number" placeholder="~" class="saldo-input add-input" name="valor" step="0.01" min="0" value="{{ mensagem[1] }}" required>
+                    </div>
+                    <div class="div-input">
+                        <p>Data</p>
+                        <input type="date"class="add-input" name="data" value="{{ mensagem[2] }}" required>
+                    </div>
+                </div>
+                <div class="div-salvar-excluir">
+                    <div id="excluir-button" onclick="divExcluirFunction()">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <p>Excluir</p>
+                    </div>
+                    <button class="botao-adicionar" type="submit">Salvar alterações</button>                 
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div id="div-confirmar-exclusao">
+        <h3>Deseja realmente excluir?</h3>
+        <div>
+            <p id="excluir-nao" onclick="buttonNaoFechar()">Não</p>
+            <a href="{{ url_for('excluir', id=mensagem[0], tipo=receitaOuDespesa) }}">Sim</a>
+        </div>
+    </div>
+
+    <div id="overlay"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

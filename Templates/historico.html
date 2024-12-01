@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico - MeuBolso</title>
+    <link rel="stylesheet" href="../static/css/historicos.css">
+    <link rel="icon" href="../static/img/logo.svg">
+    <script src="https://kit.fontawesome.com/ac1aaaa398.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="div-logo">
+            <img src="../static/img/logo.svg" alt="logo MeuBolso">
+            <p>Meu<span>Bolso</span></p>
+        </div>
+
+        <div class="menu-icon" onclick="abrirFecharMenu()">
+            <div id="linha1"></div>
+            <div id="linha2"></div>
+            <div id="linha3"></div>
+        </div>
+
+        <div class="div-items-menu">
+            <div class="div-user">
+                <i class="fa-solid fa-circle-user"></i>
+                <p>{{session.get('nome')}} {{session.get('sobrenome')}}</p>
+            </div>           
+            <nav>
+                <a href="{{ url_for('home') }}">
+                    <i class="fa-solid fa-wallet"></i>
+                    <p>Home</p>
+                </a>
+                <a href="{{ url_for('abrirReceita') }}">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    <p>Adicionar Receita</p>
+                </a>
+                <a href="{{ url_for('abrirDespesa') }}">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <p>Adicionar Despesa</p>
+                </a>
+                <a href="{{ url_for('historico') }}">
+                    <i class="fa-solid fa-file"></i>
+                    <p>Histórico</p>
+                </a>
+            </nav>
+            <a href="{{ url_for('logout') }}"> 
+                <div class="div-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <p>Sair</p>
+                </div>
+            </a>            
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="container">
+                <h1>Histórico de movimentações</h1>
+                <form class="periodo" action="{{ url_for('historico') }}" method="get">
+                    <div class="div-mes-ano">
+                        <h2>Período</h2>
+                        <p id="periodoSelecionado">
+                            {{ textoPeriodo }}
+                        </p>                                        
+                    </div>
+                    <i class="fa-solid fa-chevron-right" id="setaFiltro" onclick="toggleDropdown()"></i>
+                    <div id="dropdownPeriodo" class="dropdown">
+                        <select id="mes" name="mes">
+                            <option value="01">Janeiro</option>
+                            <option value="02">Fevereiro</option>
+                            <option value="03">Março</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Maio</option>
+                            <option value="06">Junho</option>
+                            <option value="07">Julho</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                            <option value="13">Todos</option>
+                        </select>
+                        <select id="ano" name="ano">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="13">Todos</option>
+                        </select>
+                        <button type="submit">Aplicar</button>
+                    </div>
+                </form>
+                <div class="container-movement">
+                    <a href="{{ url_for('historicoReceita') }}">
+                        <div class="movement">
+                            <h3>Quanto entrou</h3>
+                            <div class="container-saldo-chevron">
+                                <p>R$ <span>{{receitas}}</span></p>
+                                <i class="fa-solid fa-chevron-right"></i> 
+                            </div>                       
+                        </div>
+                    </a>
+                    <a href="{{ url_for('historicoDespesas') }}">
+                        <div class="movement">
+                            <h3>Quanto saiu</h3>                    
+                            <div class="container-saldo-chevron">
+                                <p>R$ <span>{{despesas}}</span></p>        
+                                <i class="fa-solid fa-chevron-right"></i>          
+                            </div>                              
+                        </div>
+                    </a>
+                </div>
+                <div class="result-movement">
+                    <h2>Entradas menos saídas no<br><span class="color-meubolso"> MeuBolso</span> {{ mensagem }}</h2>
+                    <p>R$ <span>{{receitas - despesas}}</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="overlay"></div>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>

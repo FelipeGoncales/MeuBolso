@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - MeuBolso</title>
+    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="icon" href="../static/img/logo.svg">
+    <script src="https://kit.fontawesome.com/ac1aaaa398.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="div-logo">
+        <img src="../static/img/logo.svg" alt="">
+        <p>Meu<span>Bolso</span></p>
+    </div>
+    <div class="container">
+        <img src="../static/img/person-cadastro.png" alt="" class="pessoa">
+        <div>
+            <form method="POST" action="{{ url_for('addUsuario') }}">
+                <h1>Crie sua conta</h1>
+                <div class="div-form">
+                    <div class="double-input">
+                        <div class="div-input">
+                            <label>Primeiro nome</label>
+                            <input type="text" name="nome" placeholder="Ex: João" required>
+                        </div>
+                        <div class="div-input">
+                            <label>Sobrenome</label>
+                            <input type="text" name="sobrenome" placeholder="Ex: Silva" required>
+                        </div>
+                    </div>
+            
+                    <div class="div-input">
+                        <label>E-mail</label>
+                        <input type="email" name="email" placeholder="Ex: randomperson@example.com" required>
+                    </div>
+                    <div class="div-input">
+                        <label>Senha</label>
+                        <input type="password" name="senha" placeholder="Ex: Senha123" required>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <ul class="flash-messages">
+                                    {% for category, message in messages %}
+                                        <li class="alert {{ category }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="div-button">
+                    <button type="submit">Cadastrar-se</button>
+                    <p>Já tem uma conta? <a href="{{ url_for('index') }}">Faça login</a></p>
+                </div>
+            </form>            
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeuBolso</title>
+    <link rel="stylesheet" href="../static/css/historicos.css">
+    <link rel="icon" href="../static/img/logo.svg">
+    <script src="https://kit.fontawesome.com/ac1aaaa398.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="div-logo">
+            <img src="../static/img/logo.svg" alt="logo MeuBolso">
+            <p>Meu<span>Bolso</span></p>
+        </div>
+
+        <div class="menu-icon" onclick="abrirFecharMenu()">
+            <div id="linha1"></div>
+            <div id="linha2"></div>
+            <div id="linha3"></div>
+        </div>
+
+        <div class="div-items-menu">
+            <div class="div-user">
+                <i class="fa-solid fa-circle-user"></i>
+                <p>{{session.get('nome')}} {{session.get('sobrenome')}}</p>
+            </div>           
+            <nav>
+                <a href="{{ url_for('home') }}">
+                    <i class="fa-solid fa-wallet"></i>
+                    <p>Home</p>
+                </a>
+                <a href="{{ url_for('abrirReceita') }}">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    <p>Adicionar Receita</p>
+                </a>
+                <a href="{{ url_for('abrirDespesa') }}">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <p>Adicionar Despesa</p>
+                </a>
+                <a href="{{ url_for('historico') }}">
+                    <i class="fa-solid fa-file"></i>
+                    <p>Histórico</p>
+                </a>
+            </nav>
+            <a href="{{ url_for('logout') }}"> 
+                <div class="div-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <p>Sair</p>
+                </div>
+            </a>            
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="container">
+                <h1>Saídas</h1>
+                <form class="periodo" action="{{ url_for('historicoDespesas') }}" method="get">
+                    <div class="div-mes-ano">
+                        <h2>Período</h2>
+                        <p id="periodoSelecionado">
+                            {{ textoPeriodo }}
+                        </p>                                        
+                    </div>
+                    <i class="fa-solid fa-chevron-right" id="setaFiltro" onclick="toggleDropdown()"></i>
+                    <div id="dropdownPeriodo" class="dropdown">
+                        <select id="mes" name="mes">
+                            <option value="01">Janeiro</option>
+                            <option value="02">Fevereiro</option>
+                            <option value="03">Março</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Maio</option>
+                            <option value="06">Junho</option>
+                            <option value="07">Julho</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                        <select id="ano" name="ano">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="13">Todos</option>
+                        </select>
+                        <button type="submit">Aplicar</button>
+                    </div>
+                </form>
+                <div class="container-historico">
+                    {% if despesas %}
+                        {% for despesa in despesas %}
+                            <div class="div-historico">
+                                <div class="div-grupo-fonte">
+                                    <img src="../static/img/coin-decrease.svg" alt="ícone de moeda">
+                                    <div class="div-fonte">
+                                        <p class="fonte">{{ despesa[3] }}</p>
+                                        <p class="legenda">Transferência recebida</p>
+                                    </div>
+                                </div>
+                                <div class="div-data-editar-icon">
+                                    <div class="div-info">
+                                        <p class="valor">R$<span>{{ despesa[1] }}</span></p>
+                                        <p class="data">{{ despesa[2].strftime("%d %b") }}</p>
+                                    </div>
+                                    <a href="{{ url_for('editar', id=despesa[0], tipo='despesa') }}">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="div-nada">
+                            <p>Nada foi encontrado.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('historico') }}" class="btn-voltar-historico">Voltar</a>
+            </div>
+        </section>
+    </main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="alert {{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div id="overlay"></div>
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
