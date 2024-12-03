@@ -19,6 +19,8 @@
 5. Inicializar o projeto.
 
 
+
+
 **Detalhes importantes**
 - É necessário que o Firebird SQL verão 4.0 esteja instalado no computador;
 - Lembre-se de configurar corretamente o interpretador python no PyCharm.
